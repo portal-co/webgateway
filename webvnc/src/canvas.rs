@@ -22,13 +22,13 @@ struct Canvas {
 }
 
 impl Canvas {
-    fn new(sender: mpsc::Sender<X11Event>) -> Self {
-        let document = web_sys::window().unwrap().document().unwrap();
-        let canvas = document.get_element_by_id("vnc-canvas").unwrap();
-        let canvas: HtmlCanvasElement = canvas
-            .dyn_into::<HtmlCanvasElement>()
-            .map_err(|_| ())
-            .unwrap();
+    fn new(sender: mpsc::Sender<X11Event>, canvas: HtmlCanvasElement) -> Self {
+        // let document = web_sys::window().unwrap().document().unwrap();
+        // let canvas = document.get_element_by_id("vnc-canvas").unwrap();
+        // let canvas: HtmlCanvasElement = canvas
+        //     .dyn_into::<HtmlCanvasElement>()
+        //     .map_err(|_| ())
+        //     .unwrap();
         let ctx = canvas
             .get_context("2d")
             .unwrap()
@@ -297,9 +297,9 @@ impl Clone for CanvasUtils {
 }
 
 impl CanvasUtils {
-    pub fn new(sender: mpsc::Sender<X11Event>) -> Self {
+    pub fn new(sender: mpsc::Sender<X11Event>,canvas: HtmlCanvasElement) -> Self {
         Self {
-            inner: Rc::new(Canvas::new(sender)),
+            inner: Rc::new(Canvas::new(sender,canvas)),
             bind: false,
         }
     }
